@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .el-table .warning-row {
+            background: #fae6d7;
+        }
+
+        .el-table .success-row {
+            background: #b9e8d4;
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<div id="app">
+
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+            <el-table-column
+                    prop="bookName"
+                    label="日期"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="姓名"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="writer"
+                    label="地址">
+            </el-table-column>
+        </el-table>
+    </template>
+
+</div>
+
+<script>
+    var vue =new Vue({
+        el:"#app",
+        created(){
+            this.getAll();
+        },
+        methods: {
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex === 1) {
+                    return 'warning-row';
+                } else if (rowIndex === 3) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            getAll(){
+                axios.get("http://localhost:8080/BookStore/book").then((res)=>{
+                    this.tableData=res.data.data;
+                })
+            }
+        },
+        data() {
+            return {
+                tableData: [{
+                    bookName: {},
+                    price: '小虎',
+                    writer: '上海市普陀区金沙江路 1518 弄',
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }]
+            }
+        }
+    })
+</script>
+</body>
+</html>
